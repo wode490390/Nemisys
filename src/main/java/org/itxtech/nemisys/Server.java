@@ -16,6 +16,7 @@ import org.itxtech.nemisys.network.SourceInterface;
 import org.itxtech.nemisys.network.SynapseInterface;
 import org.itxtech.nemisys.network.protocol.mcpe.BatchPacket;
 import org.itxtech.nemisys.network.protocol.mcpe.DataPacket;
+import org.itxtech.nemisys.network.protocol.mcpe.types.entity.Attribute;
 import org.itxtech.nemisys.network.query.QueryHandler;
 import org.itxtech.nemisys.network.rcon.RCON;
 import org.itxtech.nemisys.permission.DefaultPermissions;
@@ -175,6 +176,8 @@ public class Server {
 
         this.consoleSender = new ConsoleCommandSender();
         this.commandMap = new SimpleCommandMap(this);
+
+        Attribute.init();
 
         this.pluginManager = new PluginManager(this, this.commandMap);
         this.pluginManager.registerInterface(JavaPluginLoader.class);
