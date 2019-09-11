@@ -118,7 +118,7 @@ public class Server {
                 put("server-port", 19132);
                 put("synapse-ip", "0.0.0.0");
                 put("synapse-port", 10305);
-                put("password", "1234567890123456"/* TODO MD5 Password*/);
+                put("password", "1234567890123456");
                 put("lang", "eng");
                 put("async-workers", "auto");
                 put("enable-profiling", false);
@@ -285,7 +285,7 @@ public class Server {
 
     public boolean comparePassword(String pass) {
         String truePass = this.getPropertyString("password", "1234567890123456");
-        return (truePass.equals(pass));
+        return Utils.md5(truePass).equals(pass);
     }
 
     public void enablePlugins() {

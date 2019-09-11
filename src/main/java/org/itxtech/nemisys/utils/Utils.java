@@ -1,7 +1,9 @@
 package org.itxtech.nemisys.utils;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.UUID;
 
 /**
@@ -172,5 +174,17 @@ public class Utils {
         if ('A' <= ch && ch <= 'F') return ch - 'A' + 10;
         if ('a' <= ch && ch <= 'f') return ch - 'a' + 10;
         return -1;
+    }
+
+    public static String md5(String s) {
+        try {
+            String md5 = new BigInteger(1, MessageDigest.getInstance("MD5").digest(s.getBytes(StandardCharsets.UTF_8))).toString(16);
+            for (int i = 0; i < 32 - md5.length(); i++) {
+                md5 = '0' + md5;
+            }
+            return md5;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

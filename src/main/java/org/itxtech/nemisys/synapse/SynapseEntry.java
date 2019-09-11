@@ -11,6 +11,7 @@ import org.itxtech.nemisys.network.protocol.spp.*;
 import org.itxtech.nemisys.synapse.network.SynLibInterface;
 import org.itxtech.nemisys.synapse.network.SynapseInterface;
 import org.itxtech.nemisys.utils.ClientData;
+import org.itxtech.nemisys.utils.Utils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -165,7 +166,7 @@ public class SynapseEntry {
         this.getSynapse().getLogger().notice("Connecting " + this.getHash());
         this.verified = false;
         ConnectPacket pk = new ConnectPacket();
-        pk.password = this.password;
+        pk.password = Utils.md5(this.password);
         pk.isMainServer = this.isMainServer();
         pk.description = this.serverDescription;
         pk.maxPlayers = this.getSynapse().getServer().getMaxPlayers();
