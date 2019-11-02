@@ -9,10 +9,10 @@ public interface ProtocolInfo {
     /**
      * Actual Minecraft: PE protocol version
      */
-    int CURRENT_PROTOCOL = Integer.valueOf("361"); //plugins can change it
+    int CURRENT_PROTOCOL = Integer.valueOf("388"); //plugins can change it
 
-    String MINECRAFT_VERSION = "v1.12.0";
-    String MINECRAFT_VERSION_NETWORK = "1.12.0";
+    String MINECRAFT_VERSION = "v1.13.0";
+    String MINECRAFT_VERSION_NETWORK = "1.13.0";
 
     byte LOGIN_PACKET = 0x01;
     byte PLAY_STATUS_PACKET = 0x02;
@@ -29,15 +29,14 @@ public interface ProtocolInfo {
     byte ADD_ENTITY_PACKET = 0x0d;
     byte REMOVE_ENTITY_PACKET = 0x0e;
     byte ADD_ITEM_ENTITY_PACKET = 0x0f;
-    byte ADD_HANGING_ENTITY_PACKET = 0x10;
     byte TAKE_ITEM_ENTITY_PACKET = 0x11;
     byte MOVE_ENTITY_ABSOLUTE_PACKET = 0x12;
     byte MOVE_PLAYER_PACKET = 0x13;
     byte RIDER_JUMP_PACKET = 0x14;
     byte UPDATE_BLOCK_PACKET = 0x15;
     byte ADD_PAINTING_PACKET = 0x16;
-    byte EXPLODE_PACKET = 0x17;
-    byte LEVEL_SOUND_EVENT_PACKET = 0x18;
+    byte TICK_SYNC_PACKET = 0x17;
+    byte LEVEL_SOUND_EVENT_PACKET_V1 = 0x18;
     byte LEVEL_EVENT_PACKET = 0x19;
     byte BLOCK_EVENT_PACKET = 0x1a;
     byte ENTITY_EVENT_PACKET = 0x1b;
@@ -78,7 +77,7 @@ public interface ProtocolInfo {
     byte SET_PLAYER_GAME_TYPE_PACKET = 0x3e;
     byte PLAYER_LIST_PACKET = 0x3f;
     byte SIMPLE_EVENT_PACKET = 0x40;
-    byte TELEMETRY_EVENT_PACKET = 0x41;
+    byte EVENT_PACKET = 0x41;
     byte SPAWN_EXPERIENCE_ORB_PACKET = 0x42;
     byte CLIENTBOUND_MAP_ITEM_DATA_PACKET = 0x43;
     byte MAP_INFO_REQUEST_PACKET = 0x44;
@@ -122,5 +121,40 @@ public interface ProtocolInfo {
     byte REMOVE_OBJECTIVE_PACKET = 0x6a;
     byte SET_DISPLAY_OBJECTIVE_PACKET = 0x6b;
     byte SET_SCORE_PACKET = 0x6c;
+    byte MOVE_ENTITY_DELTA_PACKET = 0x6f;
+    byte SET_SCOREBOARD_IDENTITY_PACKET = 0x70;
+    byte SET_LOCAL_PLAYER_AS_INITIALIZED_PACKET = 0x71;
+    byte UPDATE_SOFT_ENUM_PACKET = 0x72;
+    byte NETWORK_STACK_LATENCY_PACKET = 0x73;
+
+    byte SCRIPT_CUSTOM_EVENT_PACKET = 0x75;
+    byte SPAWN_PARTICLE_EFFECT_PACKET = 0x76;
+    byte AVAILABLE_ENTITY_IDENTIFIERS_PACKET = 0x77;
+    byte LEVEL_SOUND_EVENT_PACKET_V2 = 0x78;
+    byte NETWORK_CHUNK_PUBLISHER_UPDATE_PACKET = 0x79;
+    byte BIOME_DEFINITION_LIST_PACKET = 0x7a;
+    byte LEVEL_SOUND_EVENT_PACKET = 0x7b;
+    byte LEVEL_EVENT_GENERIC_PACKET = 0x7c;
+    byte LECTERN_UPDATE_PACKET = 0x7d;
+    byte VIDEO_STREAM_CONNECT_PACKET = 0x7e;
+    //byte ADD_ENTITY_PACKET = 0x7f;
+    //byte REMOVE_ENTITY_PACKET = 0x80;
+    byte CLIENT_CACHE_STATUS_PACKET = (byte) 0x81;
+    byte ON_SCREEN_TEXTURE_ANIMATION_PACKET = (byte) 0x82;
+    byte MAP_CREATE_LOCKED_COPY_PACKET = (byte) 0x83;
+    byte STRUCTURE_TEMPLATE_DATA_EXPORT_REQUEST = (byte) 0x84;
+    byte STRUCTURE_TEMPLATE_DATA_EXPORT_RESPONSE = (byte) 0x85;
+    byte UPDATE_BLOCK_PROPERTIES = (byte) 0x86;
+    byte CLIENT_CACHE_BLOB_STATUS_PACKET = (byte) 0x87;
+    byte CLIENT_CACHE_MISS_RESPONSE_PACKET = (byte) 0x88;
+    byte EDUCATION_SETTINGS_PACKET = (byte) 0x89;
+    byte EMOTE_PACKET = (byte) 0x8a;
+    byte MULTIPLAYER_SETTINGS_PACKET = (byte) 0x8b;
+    byte SETTINGS_COMMAND_PACKET = (byte) 0x8c;
+    byte ANVIL_DAMAGE_PACKET = (byte) 0x8d;
+    byte COMPLETED_USING_ITEM_PACKET = (byte) 0x8e;
+    byte NETWORK_SETTINGS_PACKET = (byte) 0x8f;
+    byte PLAYER_AUTH_INPUT_PACKET = (byte) 0x90;
+
     byte BATCH_PACKET = (byte) 0xff;
 }

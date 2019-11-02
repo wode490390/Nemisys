@@ -31,10 +31,12 @@ public class PlayerListPacket extends DataPacket {
                 entry.entityId = getEntityUniqueId();
                 entry.name = getString();
 
-                entry.skin = getSkin();
                 entry.xboxUserId = getString();
-
-                this.getString(); //platform chat id
+                entry.platformChatId = this.getString();
+                entry.buildPlatform = getLInt();
+                entry.skin = getSkin();
+                entry.isTeacher = getBoolean();
+                entry.isHost = getBoolean();
             }
 
             entries[len] = entry;
@@ -52,9 +54,12 @@ public class PlayerListPacket extends DataPacket {
             if (type == TYPE_ADD) {
                 this.putVarLong(entry.entityId);
                 this.putString(entry.name);
-                this.putSkin(entry.skin);
                 this.putString(entry.xboxUserId);
-                this.putString(""); //platform chat id
+                this.putString(entry.platformChatId);
+                this.putLInt(entry.buildPlatform);
+                this.putSkin(entry.skin);
+                this.putBoolean(entry.isTeacher);
+                this.putBoolean(entry.isHost);
             }
         }
 
@@ -70,8 +75,12 @@ public class PlayerListPacket extends DataPacket {
         public final UUID uuid;
         public long entityId = 0;
         public String name = "";
-        public Skin skin;
         public String xboxUserId = "";
+        public String platformChatId = "";
+        public int buildPlatform = -1;
+        public Skin skin;
+        public boolean isTeacher;
+        public boolean isHost;
 
         public Entry(UUID uuid) {
             this.uuid = uuid;
