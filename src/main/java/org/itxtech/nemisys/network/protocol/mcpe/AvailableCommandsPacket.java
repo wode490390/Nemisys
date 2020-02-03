@@ -144,7 +144,7 @@ public class AvailableCommandsPacket extends DataPacket {
                         } else if ((type & ARG_FLAG_SOFT_ENUM) != 0) {
                             // TODO: 22/01/2019 soft enums
                         } else {
-                            //parameter.type = CommandParamType.fromId(index);
+                            parameter.type = CommandParamType.fromId(index);
                         }
                     } else {
                         //throw new IllegalStateException("Unknown parameter type!");
