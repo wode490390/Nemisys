@@ -5,15 +5,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import org.itxtech.nemisys.utils.SerializedImage;
-import org.itxtech.nemisys.utils.Skin;
-import org.itxtech.nemisys.utils.SkinAnimation;
+import org.itxtech.nemisys.utils.*;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by on 15-10-13.
@@ -128,6 +123,26 @@ public class LoginPacket extends DataPacket {
                 skin.getAnimations().add(getAnimation(element.getAsJsonObject()));
             }
         }
+
+        if (skinToken.has("SkinColor")) {
+            skin.setSkinColor(skinToken.get("SkinColor").getAsString());
+        }
+
+        if (skinToken.has("ArmSize")) {
+            skin.setArmSize(skinToken.get("ArmSize").getAsString());
+        }
+
+        if (skinToken.has("PersonaPieces")) {
+            for (JsonElement object : skinToken.get("PersonaPieces").getAsJsonArray()) {
+                skin.getPersonaPieces().add(getPersonaPiece(object.getAsJsonObject()));
+            }
+        }
+
+        if (skinToken.has("PieceTintColors")) {
+            for (JsonElement object : skinToken.get("PieceTintColors").getAsJsonArray()) {
+                skin.getTintColors().add(getTint(object.getAsJsonObject()));
+            }
+        }
     }
 
     private static SkinAnimation getAnimation(JsonObject element) {
@@ -151,6 +166,24 @@ public class LoginPacket extends DataPacket {
             }
         }
         return SerializedImage.EMPTY;
+    }
+
+    private static PersonaPiece getPersonaPiece(JsonObject object) {
+        String pieceId = object.get("PieceId").getAsString();
+        String pieceType = object.get("PieceType").getAsString();
+        String packId = object.get("PackId").getAsString();
+        boolean isDefault = object.get("IsDefault").getAsBoolean();
+        String productId = object.get("ProductId").getAsString();
+        return new PersonaPiece(pieceId, pieceType, packId, isDefault, productId);
+    }
+
+    public static PersonaPieceTint getTint(JsonObject object) {
+        String pieceType = object.get("PieceType").getAsString();
+        List<String> colors = new ArrayList<>();
+        for (JsonElement element : object.get("Colors").getAsJsonArray()) {
+            colors.add(element.getAsString()); // remove #
+        }
+        return new PersonaPieceTint(pieceType, colors);
     }
 
     private JsonObject decodeToken(String token) {
