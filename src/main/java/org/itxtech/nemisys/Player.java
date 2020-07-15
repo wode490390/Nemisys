@@ -9,6 +9,7 @@ import org.itxtech.nemisys.command.data.CommandDataVersions;
 import org.itxtech.nemisys.event.TextContainer;
 import org.itxtech.nemisys.event.TranslationContainer;
 import org.itxtech.nemisys.event.player.*;
+import org.itxtech.nemisys.network.Network;
 import org.itxtech.nemisys.network.SourceInterface;
 import org.itxtech.nemisys.network.protocol.mcpe.*;
 import org.itxtech.nemisys.network.protocol.mcpe.types.ScoreInfo;
@@ -438,17 +439,8 @@ public class Player implements CommandSender {
     }
 
     protected void processIncomingBatch(BatchPacket packet) {
-        ByteBuf buf0 = null;
-
         try {
-            buf0 = Unpooled.wrappedBuffer(packet.payload);
-            ByteBuf buf = CompressionUtil.zlibInflate(buf0);
-
-            byte[] payload = new byte[buf.readableBytes()];
-            buf.readBytes(payload);
-            buf.release();
-
-            BinaryStream buffer = new BinaryStream(payload);
+            BinaryStream buffer = new BinaryStream(Network.inflateRaw(packet.payload));
             List<DataPacket> packets = new ArrayList<>();
 
             while (!buffer.feof()) {
@@ -470,9 +462,6 @@ public class Player implements CommandSender {
             }
         } catch (Exception e) {
             MainLogger.getLogger().logException(e);
-        } finally {
-            if (buf0 != null)
-                buf0.release();
         }
     }
 

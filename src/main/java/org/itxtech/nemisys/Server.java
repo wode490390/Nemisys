@@ -866,7 +866,7 @@ public class Server {
         }
 
         try {
-            this.broadcastPacketsCallback(Zlib.deflate(data, 8), targets);
+            this.broadcastPacketsCallback(Network.deflateRaw(data, 7), targets);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -6,7 +6,6 @@ import org.itxtech.nemisys.utils.BinaryStream;
 import java.util.*;
 import java.util.function.ObjIntConsumer;
 import java.util.function.ToIntFunction;
-import java.util.stream.Collectors;
 
 /**
  * author: MagicDroidX
@@ -39,7 +38,8 @@ public class AvailableCommandsPacket extends DataPacket {
     public static final int ARG_TYPE_FILE_PATH = 14;
 
     public static final int ARG_TYPE_STRING = 29;
-    public static final int ARG_TYPE_POSITION = 37;
+    public static final int ARG_TYPE_BLOCK_POSITION = 37;
+    public static final int ARG_TYPE_POSITION = 38;
 
     public static final int ARG_TYPE_MESSAGE = 41;
     public static final int ARG_TYPE_RAWTEXT = 43;
@@ -168,6 +168,23 @@ public class AvailableCommandsPacket extends DataPacket {
 
             this.commands.put(name, versions);
         }
+
+        len = (int) getUnsignedVarInt();
+        while (len-- > 0) {
+            String name = this.getString();
+
+            int length = (int) this.getUnsignedVarInt();
+            List<String> values = new ArrayList<>(length);
+            while (length-- > 0) {
+                values.add(this.getString());
+            }
+
+            this.softEnums.put(name, values);
+        }
+
+        len = (int) getUnsignedVarInt();
+        //TODO: Command Data value restraint
+
     }
 
     @Override
@@ -288,5 +305,7 @@ public class AvailableCommandsPacket extends DataPacket {
             this.putUnsignedVarInt(values.size());
             values.forEach(this::putString);
         });
+
+        this.putUnsignedVarInt(0); //TODO: Command Data value restraint
     }
 }
