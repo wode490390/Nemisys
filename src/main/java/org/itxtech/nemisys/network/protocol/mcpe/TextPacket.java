@@ -16,23 +16,27 @@ public class TextPacket extends DataPacket {
     public static final byte TYPE_CHAT = 1;
     public static final byte TYPE_TRANSLATION = 2;
     public static final byte TYPE_POPUP = 3;
-    public static final byte TYPE_TIP = 4;
-    public static final byte TYPE_SYSTEM = 5;
-    public static final byte TYPE_WHISPER = 6;
-    public static final byte TYPE_ANNOUNCEMENT = 7;
+    public static final byte TYPE_JUKEBOX_POPUP = 4;
+    public static final byte TYPE_TIP = 5;
+    public static final byte TYPE_SYSTEM = 6;
+    public static final byte TYPE_WHISPER = 7;
+    public static final byte TYPE_ANNOUNCEMENT = 8;
+    public static final byte TYPE_OBJECT = 9;
+    public static final byte TYPE_OBJECT_WHISPER = 10;
 
     public byte type;
     public String source = "";
     public String message = "";
     public String[] parameters = new String[0];
     public boolean isLocalized = false;
+    public String xboxUserId = "";
+    public String platformChatId = "";
 
     @Override
     public void decode() {
         this.type = (byte) getByte();
         this.isLocalized = this.getBoolean() || this.type == TYPE_TRANSLATION;
         switch (type) {
-            case TYPE_POPUP:
             case TYPE_CHAT:
             case TYPE_WHISPER:
             case TYPE_ANNOUNCEMENT:
@@ -40,10 +44,14 @@ public class TextPacket extends DataPacket {
             case TYPE_RAW:
             case TYPE_TIP:
             case TYPE_SYSTEM:
+            case TYPE_OBJECT:
+            case TYPE_OBJECT_WHISPER:
                 this.message = this.getString();
                 break;
 
             case TYPE_TRANSLATION:
+            case TYPE_POPUP:
+            case TYPE_JUKEBOX_POPUP:
                 this.message = this.getString();
                 int count = (int) this.getUnsignedVarInt();
                 this.parameters = new String[count];
@@ -52,7 +60,8 @@ public class TextPacket extends DataPacket {
                 }
         }
 
-        getString();
+        this.xboxUserId = this.getString();
+        this.platformChatId = this.getString();
     }
 
     @Override
@@ -61,7 +70,6 @@ public class TextPacket extends DataPacket {
         this.putByte(this.type);
         this.putBoolean(this.isLocalized || this.type == TYPE_TRANSLATION);
         switch (this.type) {
-            case TYPE_POPUP:
             case TYPE_CHAT:
             case TYPE_WHISPER:
             case TYPE_ANNOUNCEMENT:
@@ -69,9 +77,14 @@ public class TextPacket extends DataPacket {
             case TYPE_RAW:
             case TYPE_TIP:
             case TYPE_SYSTEM:
+            case TYPE_OBJECT:
+            case TYPE_OBJECT_WHISPER:
                 this.putString(this.message);
                 break;
+
             case TYPE_TRANSLATION:
+            case TYPE_POPUP:
+            case TYPE_JUKEBOX_POPUP:
                 this.putString(this.message);
 
                 this.putUnsignedVarInt(this.parameters.length);
@@ -80,7 +93,8 @@ public class TextPacket extends DataPacket {
                 }
         }
 
-        putString(""); //platform id
+        this.putString(this.xboxUserId);
+        this.putString(this.platformChatId);
     }
 
 }

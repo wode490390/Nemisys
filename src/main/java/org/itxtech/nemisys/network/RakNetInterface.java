@@ -17,7 +17,6 @@ import org.itxtech.nemisys.raknet.server.ServerInstance;
 import org.itxtech.nemisys.utils.Binary;
 import org.itxtech.nemisys.utils.MainLogger;
 import org.itxtech.nemisys.utils.Utils;
-import org.itxtech.nemisys.utils.Zlib;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -248,7 +247,7 @@ public class RakNetInterface implements ServerInstance, AdvancedSourceInterface 
                 }
                 buffer = packet.getBuffer();
                 try {
-                    buffer = Zlib.deflate(
+                    buffer = Network.deflateRaw(
                             Binary.appendBytes(Binary.writeUnsignedVarInt(buffer.length), buffer),
                             /*Server.getInstance().networkCompressionLevel*/7);
                 } catch (Exception e) {
