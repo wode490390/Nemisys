@@ -533,6 +533,10 @@ public class BinaryStream {
             }
         }
 
+        if (id == 513) { // TODO: Shields
+            this.getVarLong();
+        }
+
         return new Item(
                 id, data, cnt, nbt
         );
@@ -552,6 +556,10 @@ public class BinaryStream {
         this.put(nbt);
         this.putVarInt(0); //TODO CanPlaceOn entry count
         this.putVarInt(0); //TODO CanDestroy entry count
+
+        if (item.getId() == 513) { // TODO: Shields
+            this.putVarLong(0);
+        }
     }
 
     public BlockVector3 getSignedBlockPosition() {
