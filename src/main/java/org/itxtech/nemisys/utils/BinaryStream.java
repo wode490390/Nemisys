@@ -225,6 +225,7 @@ public class BinaryStream {
             this.putImage(animation.image);
             this.putLInt(animation.type);
             this.putLFloat(animation.frames);
+            this.putLInt(animation.expression);
         }
 
         this.putImage(skin.getCapeData());
@@ -270,7 +271,8 @@ public class BinaryStream {
             SerializedImage image = this.getImage();
             int type = this.getLInt();
             float frames = this.getLFloat();
-            skin.getAnimations().add(new SkinAnimation(image, type, frames));
+            int expression = this.getLInt();
+            skin.getAnimations().add(new SkinAnimation(image, type, frames, expression));
         }
 
         skin.setCapeData(this.getImage());
@@ -533,6 +535,10 @@ public class BinaryStream {
             }
         }
 
+        if (id == 513) { // TODO: Shields
+            this.getVarLong();
+        }
+
         return new Item(
                 id, data, cnt, nbt
         );
@@ -552,6 +558,10 @@ public class BinaryStream {
         this.put(nbt);
         this.putVarInt(0); //TODO CanPlaceOn entry count
         this.putVarInt(0); //TODO CanDestroy entry count
+
+        if (item.getId() == 513) { // TODO: Shields
+            this.putVarLong(0);
+        }
     }
 
     public BlockVector3 getSignedBlockPosition() {
