@@ -27,6 +27,7 @@ public class Skin {
     public static final String GEOMETRY_CUSTOM_SLIM = convertLegacyGeometryName("geometry.humanoid.customSlim");
 
     private String skinId;
+    private String playFabId = "";
     private String skinResourcePatch;
     private SerializedImage skinData;
     private final List<SkinAnimation> animations = new ArrayList<>();
@@ -228,6 +229,14 @@ public class Skin {
 
     public String getFullSkinId() {
         return getSkinId() + '_' + getCapeId();
+    }
+
+    public void setPlayFabId(String playFabId) {
+        this.playFabId = playFabId;
+    }
+
+    public String getPlayFabId() {
+        return this.playFabId;
     }
 
     private static SerializedImage parseBufferedImage(BufferedImage image) {
