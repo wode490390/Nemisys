@@ -205,7 +205,7 @@ public class RakNetInterface implements ServerInstance, AdvancedSourceInterface 
                 .add(Integer.toString(info.getPlayerCount()))
                 .add(Integer.toString(info.getMaxPlayerCount()))
                 .add(server.getServerUniqueId().toString())
-                .add(subMotd)
+                .add(subMotd.isEmpty() ? "https://nukkitx.com" : subMotd)
                 .add("Survival")
                 .add("1");
 
