@@ -1,11 +1,15 @@
 package org.itxtech.nemisys.utils;
 
+import it.unimi.dsi.fastutil.io.FastByteArrayInputStream;
 import org.itxtech.nemisys.math.BlockVector3;
 import org.itxtech.nemisys.math.NemisysMath;
+import org.itxtech.nemisys.nbt.NBTIO;
+import org.itxtech.nemisys.nbt.tag.CompoundTag;
 import org.itxtech.nemisys.network.protocol.mcpe.types.entity.metadata.*;
-import org.itxtech.nemisys.network.protocol.mcpe.types.item.Item;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Map;
@@ -420,9 +424,13 @@ public class Binary {
                     stream.putUnsignedVarInt(s.getBytes(StandardCharsets.UTF_8).length);
                     stream.put(s.getBytes(StandardCharsets.UTF_8));
                     break;
-                case EntityMetadata.DATA_TYPE_SLOT:
-                    SlotEntityData slot = (SlotEntityData) d;
-                    stream.putSlot(slot.getData());
+                case EntityMetadata.DATA_TYPE_NBT:
+                    NBTEntityData slot = (NBTEntityData) d;
+                    try {
+                        stream.put(NBTIO.write(slot.getData(), ByteOrder.LITTLE_ENDIAN, true));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 case EntityMetadata.DATA_TYPE_POS:
                     IntPositionEntityData pos = (IntPositionEntityData) d;
@@ -467,9 +475,16 @@ public class Binary {
                 case EntityMetadata.DATA_TYPE_STRING:
                     value = new StringEntityData(key, stream.getString());
                     break;
-                case EntityMetadata.DATA_TYPE_SLOT:
-                    Item item = stream.getSlot();
-                    value = new SlotEntityData(key, item.getId(), item.getDamage(), item.getCount());
+                case EntityMetadata.DATA_TYPE_NBT:
+                    int offset = stream.getOffset();
+                    FastByteArrayInputStream fbais = new FastByteArrayInputStream(stream.get());
+                    try {
+                        CompoundTag tag = NBTIO.read(fbais, ByteOrder.LITTLE_ENDIAN, true);
+                        value = new NBTEntityData(key, tag);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    stream.setOffset(offset + (int) fbais.position());
                     break;
                 case EntityMetadata.DATA_TYPE_POS:
                     BlockVector3 v3 = stream.getSignedBlockPosition();

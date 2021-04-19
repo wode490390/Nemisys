@@ -2,6 +2,7 @@ package org.itxtech.nemisys.network.protocol.mcpe.types.entity.metadata;
 
 import org.itxtech.nemisys.math.Vector3;
 import org.itxtech.nemisys.math.Vector3f;
+import org.itxtech.nemisys.nbt.tag.CompoundTag;
 import org.itxtech.nemisys.network.protocol.mcpe.types.item.Item;
 
 import java.util.HashMap;
@@ -18,7 +19,7 @@ public class EntityMetadata {
     public static final int DATA_TYPE_INT = 2;
     public static final int DATA_TYPE_FLOAT = 3;
     public static final int DATA_TYPE_STRING = 4;
-    public static final int DATA_TYPE_SLOT = 5;
+    public static final int DATA_TYPE_NBT = 5;
     public static final int DATA_TYPE_POS = 6;
     public static final int DATA_TYPE_LONG = 7;
     public static final int DATA_TYPE_VECTOR3F = 8;
@@ -73,8 +74,8 @@ public class EntityMetadata {
         return this.getByte(id) == 1;
     }
 
-    public Item getSlot(int id) {
-        return (Item) this.getOrDefault(id, new SlotEntityData(id, new Item(0))).getData();
+    public CompoundTag getNBT(int id) {
+        return (CompoundTag) this.getOrDefault(id, new NBTEntityData(id, new CompoundTag())).getData();
     }
 
     public String getString(int id) {
@@ -113,12 +114,13 @@ public class EntityMetadata {
         return this.putByte(id, value ? 1 : 0);
     }
 
-    public EntityMetadata putSlot(int id, int blockId, int meta, int count) {
-        return this.put(new SlotEntityData(id, blockId, (byte) meta, count));
+    public EntityMetadata putNBT(int id, CompoundTag tag) {
+        return this.put(new NBTEntityData(id, tag));
     }
 
+    @Deprecated
     public EntityMetadata putSlot(int id, Item value) {
-        return this.put(new SlotEntityData(id, value));
+        return this.put(new NBTEntityData(id, value.getNamedTag()));
     }
 
     public EntityMetadata putString(int id, String value) {
