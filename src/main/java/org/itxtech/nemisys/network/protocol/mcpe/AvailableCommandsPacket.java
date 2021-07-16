@@ -105,7 +105,7 @@ public class AvailableCommandsPacket extends DataPacket {
         while (len-- > 0) {
             String name = getString();
             String description = getString();
-            int flags = getByte();
+            int flags = getLShort();
             int permission = getByte();
             CommandEnum alias = null;
 
@@ -260,7 +260,7 @@ public class AvailableCommandsPacket extends DataPacket {
 
             putString(name);
             putString(data.description);
-            putByte((byte) data.flags);
+            putLShort(data.flags);
             putByte((byte) data.permission);
 
             putLInt(data.aliases == null ? -1 : enums.indexOf(data.aliases));
